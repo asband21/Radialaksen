@@ -1,4 +1,4 @@
 # Radialaksen
 Radialaksen_1._kode
-Hello form Tobias
+Hello from Tobias
 hej fra Asbjørn (°_°)
