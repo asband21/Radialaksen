@@ -4,3 +4,4 @@ Hello from Tobias
 hej fra Asbjørn (°_°) 
 Hey, det her er Jørgensen
 jakob knudsen her
+Hej fra Nicher
