@@ -1,0 +1,8 @@
+function output = bouns_and_0(list)
+    a = clame(list(1),0,175); 
+    b = clamp(list(2),0,175);
+    c = clamp(list(3),0, 170);
+    d = clamp(list(4),0,185);
+    e = clamp(list(5),0,160);
+    output = [a ,b ,c ,d ,e];
+end

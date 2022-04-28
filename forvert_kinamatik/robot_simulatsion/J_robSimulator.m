@@ -1,6 +1,6 @@
 clc; clear; close all; 
 %% Setup
-    robot = importrobot("robot_arm_description\urdf\robot_arm.urdf");
+    robot = importrobot("robot_arm_description/urdf/robot_arm.urdf");
     currentRobotJConfig = homeConfiguration(robot); 
 %% The angels   
 %0.5*0.18* 1000;
