@@ -14,16 +14,16 @@ x = [];
 y = []; 
 z = [];
 
-for a_v = 0 : 20 : 180
-for b_v = 0 : 20 : 180
-for c_v = 0 : 20 : 180
-for d_v = 0 : 20 : 180
-for e_v = 0 : 20 : 180
-    a = (pi*a_v)/180;
-    b = (pi*b_v)/180;
-    c = (pi*c_v)/180;
-    d = (pi*d_v)/180;
-    e = (pi*e_v)/180;
+%for a_v = 0 : 20 : 180
+%for b_v = 0 : 20 : 180
+%for c_v = 0 : 20 : 180
+%for d_v = 0 : 20 : 180
+%for e_v = 0 : 20 : 180
+%    a = (pi*a_v)/180;
+%    b = (pi*b_v)/180;
+%    c = (pi*c_v)/180;
+%    d = (pi*d_v)/180;
+%    e = (pi*e_v)/180;
 
     A__0 = [1, 0, 0, 0 ; 0, 1, 0, 0 ; 0, 0, 1, 0 ; 0, 0, l__0, 1].';
     A = [cos(a), sin(a), 0, 0 ; -sin(a), cos(a), 0, 0 ; 0, 0, 1, 0 ; 0, 0, 0, 1].';
@@ -52,17 +52,17 @@ for e_v = 0 : 20 : 180
     x(iiii(2)+1) = x2(jjjj(2));
     y(iiii(2)+1) = y2(jjjj(2));
     z(iiii(2)+1) = z2(jjjj(2));
-    %plot3(x2,y2,z2)
+    plot3(x2,y2,z2)
     %xlim([-250 250])
     %ylim([-250 250])
     %zlim([0 500])
-end
-end
-end
-end
-ppy = a_v
-end
-densityScatter([x,y,z])
+%end
+%end
+%end
+%end
+%ppy = a_v
+%end
+%densityScatter([x,y,z])
 %densityScatterChart(x,y)
 %scatter3(x,y,z,'blue','filled')
 %plot3(x,y,z)
