@@ -5,7 +5,7 @@ l__3 = 62.6;
 O__1 = 13.9;
 O__2 = 5.25;
 a = (pi*0)/180
-b = (pi*0)/180-(pi/2)
+b = (pi*90)/180-(pi/2)
 c = (pi*90)/180-(pi/2)
 d = 0
 e = (pi*90)/180-(pi/2)
@@ -14,17 +14,17 @@ x = [];
 y = []; 
 z = [];
 
-for a_v = 0 : 1 : 180
-%for b_v = 0 : 5 : 180
-%for c_v = 0 : 5 : 180
-%for d_v = 0 : 5 : 180
-%for e_v = 0 : 5 : 180
-a = (pi*a_v)/180;
-%    a = 0;
-%    b = (pi*b_v)/180-(pi/2);
-%    c = (pi*c_v)/180-(pi/2);
-%    d = (pi*d_v);
-%    e = (pi*e_v)/180-(pi/2);
+%for a_v = 0 : 90 : 180
+for b_v = 0 : 10 : 180
+for c_v = 0 : 10 : 180
+for d_v = 0 : 10 : 180
+for e_v = 0 : 10 : 180
+    %a = (pi*a_v)/180;
+    a = 0;
+    b = (pi*b_v)/180-(pi/2);
+    c = (pi*c_v)/180-(pi/2);
+    d = (pi*d_v);
+    e = (pi*e_v)/180-(pi/2);
 
     A__0 = [1, 0, 0, 0 ; 0, 1, 0, 0 ; 0, 0, 1, 0 ; 0, 0, l__0, 1].';
     A = [cos(a), sin(a), 0, 0 ; -sin(a), cos(a), 0, 0 ; 0, 0, 1, 0 ; 0, 0, 0, 1].';
@@ -53,31 +53,25 @@ a = (pi*a_v)/180;
     x(iiii(2)+1) = x2(jjjj(2));
     y(iiii(2)+1) = y2(jjjj(2));
     z(iiii(2)+1) = z2(jjjj(2));
-    plot3(x2,y2,z2)
-    xlim([-350 350])
-    ylim([-350 350])
-    zlim([0 700])
-    pause(0.1)
+    %plot3(x2,y2,z2)
+    %xlim([-350 350])
+    %ylim([-350 350])
+    %zlim([0 700])
 end
-%end
-%end
-%ppy = b_v
-%end
+end
+end
+end
 %ppy = a_v
 %end
 
-%area3D(x,y,z)
-%plot3(x,y,z)
+area3D(x,y,z)
+plot3(x,y,z)
+%xlim([-350 350])
+    %ylim([-350 350])
+    %zlim([0 700])
 
 hej = 2+2
 %densityScatter([x,y,z])
-%densityScatterChart(y,z)
-
+%densityScatterChart(x,y)
 %scatter3(x,y,z,'blue','filled')
-%scatter(y,z,'blue','filled')
-
-%xlim([-350 350])
-%ylim([-350 550])
-%zlim([-100 700])
-
 %plot3(x,y,z)
