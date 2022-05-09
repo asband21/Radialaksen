@@ -12,7 +12,7 @@ angle_cov_offset = @(angle,offset) (angle+offset)/180
 
 joint_angle_to_raniens = @(angle) angle*pi
 
-degree = [0,0,0,0,0]
+degree = [0,0,180,0,0]
 
 mani_degree=degree; 
 for i = 1 :1: 5 
