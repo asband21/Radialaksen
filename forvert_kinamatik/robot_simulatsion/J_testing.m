@@ -11,13 +11,8 @@ for n=1:1:5
 end
 mani_degree
 degree=[1, 5.5, 4.7, 0, 0.8];
-
 degree = degree*pi/180 ;
-
-
-%}
-
 angle_cov = @(x) x/180
-
 angle_cov(45)
-sin(3.14)
+sin(3.14) 
+%}
