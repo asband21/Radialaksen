@@ -57,6 +57,7 @@ asb_for = J_Forward_kinematic(degree(1),degree(2),degree(3),degree(4),degree(5))
 poseNow = getTransform(robot, robot_config, 'end_point');
 
 %
+
 x_asb = [];
 y_asb = [];
 x_asb = [];
