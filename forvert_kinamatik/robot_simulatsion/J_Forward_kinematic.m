@@ -20,9 +20,9 @@ function output = J_Forward_kinematic(a, b, c, d, e)
     %F = [cos(d), 0, sin(d), 0 ; 0, 1, 0, 0 ; -sin(d), 0, cos(d), 0 ; 0, 0, 0, 1].';
     F = [cos(d), sin(d), 0, 0 ; -sin(d), cos(d), 0, 0 ; 0, 0, 1, 0 ; 0, 0, 0, 1].';
     G = [1, 0, 0, 0 ; 0, 1, 0, 0 ; 0, 0, 1, 0 ; -O__2, 0, l__2, 1].';
-    %H = [1, 0, 0, 0 ; 0, cos(e), sin(e), 0 ; 0, -sin(e), cos(e), 0 ; 0, 0, 0, 1].';
-    %J = [1, 0, 0, 0 ; 0, 1, 0, 0 ; 0, 0, 1, 0 ; 0, 0, l__3, 1].';
-    list = {A__0, A ,A__2,B,C,E,E__2,F,G};
+    H = [1, 0, 0, 0 ; 0, cos(e), sin(e), 0 ; 0, -sin(e), cos(e), 0 ; 0, 0, 0, 1].';
+    J = [1, 0, 0, 0 ; 0, 1, 0, 0 ; 0, 0, 1, 0 ; 0, 0, l__3, 1].';
+    list = {A__0, A ,A__2,B,C,E,E__2,F,G,H,J};
     x2 = [];
     y2 = [];
     z2 = [];
@@ -37,11 +37,11 @@ function output = J_Forward_kinematic(a, b, c, d, e)
     x = x2(jjjj(2));
     y = y2(jjjj(2));
     z = z2(jjjj(2));
-    %plot3(x2,y2,z2)
-    %xlim([-350 350])
-    %ylim([-350 350])
-    %zlim([0 700])
-    %pause(0.01)
+    plot3(x2,y2,z2)
+    xlim([-350 350])
+    ylim([-350 350])
+    zlim([0 700])
+    view(a*180/pi+90,0)
     output=[x;y;z];
 end
 
