@@ -1,6 +1,7 @@
 clc; clear; close all; 
 %Husk at port nummet skal ændres til jeres port eks"COM14"
-a = arduino('COM14', 'Uno', 'Libraries', 'Servo');
+%a = arduino('COM14', 'Uno', 'Libraries', 'Servo');
+a = arduino('/dev/ttyACM0', 'Uno', 'Libraries', 'Servo');
 
 wrist = servo(a, 'D9'); %, 'MinPulseDuration', 1e-3, 'MaxPulseDuration', 2e-3);
 roll = servo(a, 'D8'); %, 'MinPulseDuration', 9e-4, 'MaxPulseDuration', 2e-3);
