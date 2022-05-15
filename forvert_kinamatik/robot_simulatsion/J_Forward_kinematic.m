@@ -1,4 +1,7 @@
-function output = J_Forward_kinematic(a, b, c, d, e) 
+function output = J_Forward_kinematic(a, b, c, d, e,plot_bool)
+    if nargin < 6
+        plot_bool = false;
+    end
     l__0 = 97.15;
     l__1 = 119.65;
     l__2 = 120.35;
@@ -37,11 +40,14 @@ function output = J_Forward_kinematic(a, b, c, d, e)
     x = x2(jjjj(2));
     y = y2(jjjj(2));
     z = z2(jjjj(2));
-    plot3(x2,y2,z2)
-    xlim([-350 350])
-    ylim([-350 350])
-    zlim([0 700])
-    view(a*180/pi+90,0)
+    if plot_bool
+        plot3(x2,y2,z2)
+        xlim([-150 350])
+        ylim([-150 350])
+        zlim([0 500])
+        view(45,45)
+        %view(a*180/pi+90,0)
+    end
     output=[x;y;z];
 end
 
