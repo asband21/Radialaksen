@@ -25,25 +25,25 @@ function output = J_Forward_kinematic(a, b, c, d, e,plot_bool)
     G = [1, 0, 0, 0 ; 0, 1, 0, 0 ; 0, 0, 1, 0 ; -O__2, 0, l__2, 1].';
     H = [1, 0, 0, 0 ; 0, cos(e), sin(e), 0 ; 0, -sin(e), cos(e), 0 ; 0, 0, 0, 1].';
     J = [1, 0, 0, 0 ; 0, 1, 0, 0 ; 0, 0, 1, 0 ; 0, 0, l__3, 1].';
-    list = {A__0, A ,A__2,B,C,E,E__2,F,G,H,J};
+    transformation_matrix_list = {A__0, A ,A__2,B,C,E,E__2,F,G,H,J};
     x2 = [];
     y2 = [];
     z2 = [];
-    ind = [1 0 0 0; 0 1 0 0; 0 0 1 0 ; 0 0 0 1];
-    jjjj = size(list);
-    for i = 1 : 1 : jjjj(2)
-        ind = ind*list{i};
-        x2(i) = ind(1,4);
-        y2(i) = ind(2,4);
-        z2(i) = ind(3,4);
+    identity_matrix = [1 0 0 0; 0 1 0 0; 0 0 1 0 ; 0 0 0 1];
+    size_P_transformation_matrix_list = size(transformation_matrix_list);
+    for i = 1 : 1 : size_P_transformation_matrix_list(2)
+        identity_matrix = identity_matrix*transformation_matrix_list{i};
+        x2(i) = identity_matrix(1,4);
+        y2(i) = identity_matrix(2,4);
+        z2(i) = identity_matrix(3,4);
     end
-    x = x2(jjjj(2));
-    y = y2(jjjj(2));
-    z = z2(jjjj(2));
+    x = x2(size_P_transformation_matrix_list(2));
+    y = y2(size_P_transformation_matrix_list(2));
+    z = z2(size_P_transformation_matrix_list(2));
     if plot_bool
         plot3(x2,y2,z2)
-        xlim([-150 350])
-        ylim([-150 350])
+        xlim([-150 350]);
+        ylim([-150 350]);
         zlim([0 500])
         %view(0,90)
         view(a*180/pi+90,0)

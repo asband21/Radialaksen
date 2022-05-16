@@ -14,43 +14,20 @@ function output = a_invers_kinematic(x,y,z)
     x2 = x-l__3*sin(a); %+((y)/len_2d(y,x))*O__1 - l__3*sin(a)*1.01 ; %
     y2 = y-l__3*cos(a);%+((-x)/len_2d(y,x))*O__1 - l__3*cos(a)*1.01 ; %-((-x)/len_2d(y,x))*O__1
     z2 = z-l__0;
-    len2 = len_2d(len_2d(x2,y2),z2);
-    indhol = ((l__1^2)+(l__2^2)-len2^2)/(2*l__1*l__2);
-    c = acos(clamp(indhol,-1,1));
+    len2 = len_2d(len_2d(x2,y2),z2); % finding the length from origo to therede* joint
+    %indhol = ((l__1^2)+(l__2^2)-len2^2)/(2*l__1*l__2);
+    c = acos(clamp(((l__1^2)+(l__2^2)-len2^2)/(2*l__1*l__2),-1,1));
     c2 = -c;
-
-    %mid_x =  
-    %med_y =  
-
-    %b2 = atan2(z2,len2) - acos((len2^2+l__1^2-l__2^2)/(len2*l__1*2));
-    %b =  atan2(z2*l__1+z2*l__2*cos(c)-len2*l__2*sin(c),len2*l__1+len2*l__2*cos(c)+z2*l__2*sin(c));
-    %b =  atan2(len2*l__1+len2*l__2*cos(c)+z2*l__2*sin(c),z2*l__1+z2*l__2*cos(c)-len2*l__2*sin(c));
-    %b2 = atan2(z2*l__1+z2*l__2*cos(c2)-len2*l__2*sin(c2) ,len2*l__1+len2*l__2*cos(c2)+z2*l__2*sin(c2));
-    %if(x*y>0)
     b = atan2(z2,len_2d(x2,y2)) + acos(clamp((len2^2+l__1^2-l__2^2)/(len2*l__1*2),-1,1));
     b2 = atan2(z2,len_2d(x2,y2)) - acos(clamp((len2^2+l__1^2-l__2^2)/(len2*l__1*2),-1,1));
-    %else
-    %        b = atan2(z2,len_2d(x2,y2)) + acos(clamp((len2^2+l__1^2-l__2^2)/(len2*l__1*2),-1,1));
-    %        b2 = atan2(z2,-len_2d(x2,y2)) + acos(clamp((len2^2+l__1^2-l__2^2)/(len2*l__1*2),-1,1));
-    %end
-    %lenend = len_2d(len_2d(x,y),z2)
-    x3 = len_2d(x2,y2)-cos(c)*l__1;
-    y3 = z2-sin(c)*l__1;
-    e = atan2(x3,y3);
-    %plot3([x x2],[y y2],[0 0])
-    %xlim([-350 350])
-    %ylim([-350 350])
-    %view(0,90)
-    %zlim([-200 500])
-    e2 = e+pi;
-    %if(len_2d(x,y)>len_2d(x2,y2))
-    %    e = acos((l__2^2 + len2^2 - l__1^2)/(2*l__2*len2)) - acos((l__3^2 + len2^2 - (len_2d(len_2d(x,y),z2))^2)/(2*l__3*len2))%-kons -atan2(z2,len_2d(x2,y2));
-    %else
-   %
-    %end
-    %e2 = acos((l__2^2 + len2^2 - l__1^2)/(2*l__2*len2)) + acos((l__3^2 + len2^2 - (len_2d(len_2d(x,y),z2))^2)/(2*l__3*len2))%-kons -atan2(z2,len_2d(x2,y2));;%+kons+pi-atan2(z2,len_2d(x2,y2)); 
 
-    a =  -(180*a)/pi;
+    x3 = len_2d(x2,y2)-cos(c)*l__1;
+    z3 = z2-sin(c)*l__1;
+    e = atan2(x3,z3);
+   
+    e2 = e+pi;
+  
+    a =  -(180*a)/pi; %fiding to the phycial robot
     b =  (180*b)/pi;
     c =  (180*c)/pi-90;
     d =  (180*d)/pi;
@@ -61,9 +38,5 @@ function output = a_invers_kinematic(x,y,z)
     e2 = (180*e2)/pi;
     
     output = [a, b, c ,d, e+10; a, b2, c2 ,d, e2+10; mod(a+180,360), 180-b, 180-c ,d, 180-e; mod(a+180,360), 180-b2, 180-c2 ,d, 180-e2];
-    %if(a > pi)
-    %    output = [a, b, c ,d, e; a2 pi-b]
-    %else
-    %    output = [a, b, c ,d, e; a2  ]
-    %end
+   
 end

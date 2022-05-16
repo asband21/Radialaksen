@@ -1,11 +1,11 @@
 %% follow function
     
-function main = folo_line_edit()
+function main = follow_line_edit()
     %clc; clear; close all;  
-    ardino = false % if arduino is true, then arudino debugning is enabled
+    ardino = false % if arduino is true, then the arudino is activated
     figure(1);
     if ardino
-        robot = setop_adriuno();
+        robot = setup_ardurino();
     end 
     %% Debuging
     %J_Forward_kinematic(0,90,90,0,0,true)
@@ -29,8 +29,7 @@ function main = folo_line_edit()
     fun5 = j_trajectory_2(point_5,point_6);
     fun6 = j_trajectory_2(point_6,point_7); 
 
-  % data is incetet into matrix, the matrix grows for each functions that
-  % is incetet  
+  % data is incetet into matrix, the matrix grows for each functions that is incetet  
 
   %% matrix update with functions and poitns
     data = run_step(0,0.1,1,fun1);
@@ -45,13 +44,13 @@ function main = folo_line_edit()
     for runs = 1 : 10
         siz = size(data);
         inverse = zeros(siz(1)+1,5);
-        start_value = a_inverses_kinematic(data(1,1),data(1,2),data(1,3));
+        start_value = a_invers_kinematic(data(1,1),data(1,2),data(1,3));
         inverse(1,:) = start_value(1,:);
         xyz = zeros(siz(1),3); 
 
         for i = 1 : 1 : siz(1)
             pause(0); %pause
-            mid = a_inverses_kinematic(data(i,1),data(i,2),data(i,3)) %inversekinematic on the 'data'  
+            mid = a_invers_kinematic(data(i,1),data(i,2),data(i,3)) %inversekinematic on the 'data'  
             inverse(i+1,:) = vinkler(inverse(i,:),mid); % angle
             xyz(i,:) = J_Forward_kinematic(inverse(i+1,1),inverse(i+1,2), ...
                 inverse(i+1,3),inverse(i+1,4),inverse(i+1,5),true) % checking the forwardkiematic with the inverse angels 
@@ -88,25 +87,28 @@ function done = j_trajectory_2(t_1,t_2)
     done=f;
 end 
 
-% Asbjørn - kig lige here, hvad sker der her? 
-function done = run_step(start,step, stop, fun,delay)
+
+function done = run_step(start,step, stop, fun,delay) 
+
+%If the delay is not specfied in the function call, delay is equal to 0 
     if nargin < 5
         delay = 0;
     end
 
+    % IZITILAZING array to optimize the performance
     var = [];
     caunter = 1;
-    var(uint8((stop-start)/step)+1,:) = [0,0,0]; 
+    var(uint8((stop-start)/step)+1,:) = [0,0,0];  % finding the max vaule of and setting it to [0,0,0]
     for i = start : step : stop
-        var(caunter,:) = fun(i);
+        var(caunter,:) = fun(i); % running the functions of the paths
         pause(delay);
-        caunter = caunter+1;
+        caunter = caunter+1; % count the loop eduration
     end
     done = var
 end
 
 %% arduino setup 
-function robot = setop_adriuno()
+function robot = setup_ardurino()
     if ismac
         print("fuck dig");
     elseif isunix
@@ -127,7 +129,6 @@ end
 
 %% writting postion to the physical robot
 function set_angel(robot,a,b,c,d,e)
-    per = [a ,b ,c ,d ,e]
     writePosition(robot(5), e);
     writePosition(robot(4), d);
     writePosition(robot(3), c);
@@ -138,11 +139,12 @@ end
 %% Funtion-set #2 
 function out = dregres_to_robot(x)
     if(x<0) 
-        x = 360+x; % if the degree is below 0, it is then added the value of 360 
+        x = 360+x; % if the degree is below 0, it is then added the value of 360
     end
-    out = clamp(mod(x,360),0,180)/180; 
+    out = clamp(mod(x,360),0,180)/180; % conventing the angles to robot joint angels
 end 
 
+% ensure that the robot joint angels are between 0 and 360 degrees
 function out = trim_angls(list)
     for i = 1 : 1 : 5
         if(list(i)<0)
@@ -160,7 +162,7 @@ function erl = er_lovlig(list)
         if(list(i)<0)
             list(i) = 360+list(i);
         end
-        list(i) = mod(list(i),360);
+        list(i) = mod(list(i),360)
         if(list(i) < 0 && list(i) > 180)
             bol = false;
         end
@@ -168,10 +170,11 @@ function erl = er_lovlig(list)
     end
 end
 
-function out = vinkler(now,angls_val)
-    vink = [1000,1000,1000,1000];
+% Finding the solution with the least amout of angel deviation
+function out = vinkler(now,angls_val) 
+%Find angel deaviation
+    vink = [1000,1000,1000,1000]; % High vaule, like infinity
     for i = 1 : 1 : 4
-        pol = angls_val(i,:)
         if(er_lovlig(angls_val(i,:)))
             angls_val(i,:) = trim_angls(angls_val(i,:));
             vink(i) = 0;
@@ -181,16 +184,18 @@ function out = vinkler(now,angls_val)
         end
     end
     min = 100000000;
-    index = 0;
+    index = 0; 
+    % comparing soultions with least deviation
     for i = 1 : 1 : 4
-        if not(vink(i) == 1000 && vink(i)< min)
+        if not(vink(i) == 1000) && vink(i)< min % when angle is not equal tp 1000 and is abov minimum
             index = i;
             min = vink(i);
         end
-    end
+    end  
+    % there was no leagel solutions founde
     if index == 0
         out = now;
     else
-        out = angls_val(index,:);
+        out = angls_val(index,:); %leagal soultion found with the least angel deviation
     end
 end
