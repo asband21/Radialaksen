@@ -1,39 +1,58 @@
 %%folov fugnsen
+    
 function main = folo_line()
     %clc; clear; close all; 
+    ardino = false
     figure(1);
-    robor = setop_adriuno();
+    if ardino
+        robor = setop_adriuno();
+    end
     %J_Forward_kinematic(0,90,90,0,0,true)
     %while true
     %    set_angel(robor,dregres_to_robot(0),dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(90))
     %end
+
     pungt_1 = [-150,150,20];
     pungt_2 = [-150,150,150];
     pungt_3 = [-150,-150,150];
     pungt_4 = [-150,-150,20];
+    pungt_5 = pungt_3;
+    pungt_6 = pungt_2;
+    pungt_7 = pungt_1;
     fun1 = j_trajectory_2(pungt_1,pungt_2);
     fun2 = j_trajectory_2(pungt_2,pungt_3);
     fun3 = j_trajectory_2(pungt_3,pungt_4);
+    fun4 = j_trajectory_2(pungt_4,pungt_5);
+    fun5 = j_trajectory_2(pungt_5,pungt_6);
+    fun6 = j_trajectory_2(pungt_6,pungt_7);
     data = run_step(0,0.1,1,fun1);
     data = [data;run_step(0,0.02,1,fun2)];
     data = [data;run_step(0,0.1,1,fun3)];
-    siz = size(data);
-    inver = zeros(siz(1)+1,5);
-    inver(1,:) = [90,90,90,0,90];
-    xyz = zeros(siz(1),3);
-    for i = 1 : 1 : siz(1)
-        pause(0);
-
-        mid = a_invers_kinematic(data(i,1),data(i,2),data(i,3))
-        inver(i+1,:) = vinkler(inver(i,:),mid);
-        xyz(i,:) = J_Forward_kinematic(mid(1,1),mid(1,2),mid(1,3),mid(1,4),mid(1,5),true)
-        rob_angel = [];
-        for led = 1 : 1: 5
-            rob_angel(led) = dregres_to_robot(mid(1,led));
+    data = [data;run_step(0,0.1,1,fun4)];
+    data = [data;run_step(0,0.02,1,fun5)];
+    data = [data;run_step(0,0.1,1,fun6)];
+    for roins = 1 : 10
+        siz = size(data);
+        inver = zeros(siz(1)+1,5);
+        start_vadi = a_invers_kinematic(data(1,1),data(1,2),data(1,3));
+        inver(1,:) = start_vadi(1,:);
+        xyz = zeros(siz(1),3);
+        for i = 1 : 1 : siz(1)
+            pause(0);
+    
+            mid = a_invers_kinematic(data(i,1),data(i,2),data(i,3))
+            inver(i+1,:) = vinkler(inver(i,:),mid);
+            xyz(i,:) = J_Forward_kinematic(inver(i+1,1),inver(i+1,2),inver(i+1,3),inver(i+1,4),inver(i+1,5),true)
+            rob_angel = [];
+            for led = 1 : 1: 5
+                rob_angel(led) = dregres_to_robot(inver(i+1,led));
+            end
+            if ardino
+                set_angel(robor,rob_angel(1),rob_angel(2),rob_angel(3),rob_angel(4),rob_angel(5));
+            end
+            pause(0.01);
+            %a_invers_kinematic()
         end
-        set_angel(robor,rob_angel(1),rob_angel(2),rob_angel(3),rob_angel(4),rob_angel(5));
-        pause(0.5);
-        %a_invers_kinematic()
     end
     figure(2);
     scatter3(xyz(:,1),xyz(:,2),xyz(:,3));
