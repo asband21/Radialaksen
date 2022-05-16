@@ -2,20 +2,21 @@
     
 function main = folo_line()
     %clc; clear; close all; 
-    ardino = false
+    ardino = true
     figure(1);
     if ardino
         robor = setop_adriuno();
     end
-    %J_Forward_kinematic(0,90,90,0,0,true)
-    %while true
-    %    set_angel(robor,dregres_to_robot(0),dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(90))
-    %end
+    
+     %while true
+     %    J_Forward_kinematic(90,90,90,0,180,true)
+     %    set_angel(robor,dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(180))
+     %end
 
-    pungt_1 = [-150,150,20];
-    pungt_2 = [-150,150,150];
-    pungt_3 = [-150,-150,150];
-    pungt_4 = [-150,-150,20];
+    pungt_1 = [-40,250,100];
+    pungt_2 = [-267.5,200,100];
+    pungt_3 = [-267.5,0,100];
+    pungt_4 = [-267.5,0,75];
     pungt_5 = pungt_3;
     pungt_6 = pungt_2;
     pungt_7 = pungt_1;
@@ -25,13 +26,13 @@ function main = folo_line()
     fun4 = j_trajectory_2(pungt_4,pungt_5);
     fun5 = j_trajectory_2(pungt_5,pungt_6);
     fun6 = j_trajectory_2(pungt_6,pungt_7);
-    data = run_step(0,0.1,1,fun1);
+    data = run_step(0,0.03,1,fun1);
     data = [data;run_step(0,0.02,1,fun2)];
     data = [data;run_step(0,0.1,1,fun3)];
     data = [data;run_step(0,0.1,1,fun4)];
     data = [data;run_step(0,0.02,1,fun5)];
-    data = [data;run_step(0,0.1,1,fun6)];
-    for roins = 1 : 10
+    data = [data;run_step(0,0.01,1,fun6)];
+    for roins = 1 : 1
         siz = size(data);
         inver = zeros(siz(1)+1,5);
         start_vadi = a_invers_kinematic(data(1,1),data(1,2),data(1,3));
@@ -41,7 +42,7 @@ function main = folo_line()
             pause(0);
     
             mid = a_invers_kinematic(data(i,1),data(i,2),data(i,3))
-            inver(i+1,:) = vinkler(inver(i,:),mid);
+            inver(i+1,:) = mid(1,:);% vinkler(inver(i,:),mid);
             xyz(i,:) = J_Forward_kinematic(inver(i+1,1),inver(i+1,2),inver(i+1,3),inver(i+1,4),inver(i+1,5),true)
             rob_angel = [];
             for led = 1 : 1: 5
@@ -94,7 +95,7 @@ function robor = setop_adriuno()
         print("linux");
         a = arduino('/dev/ttyACM0', 'Uno', 'Libraries', 'Servo');
     elseif ispc
-        a = arduino('COM14', 'Uno', 'Libraries', 'Servo');
+        a = arduino('COM3', 'Uno', 'Libraries', 'Servo');
     else
         disp('Platform not supported')
     end
@@ -110,7 +111,7 @@ function set_angel(robor,a,b,c,d,e)
     per = [a ,b ,c ,d ,e]
     writePosition(robor(5), e);
     writePosition(robor(4), d);
-    writePosition(robor(3), c);
+    writePosition(robor(3), 1-c);
     writePosition(robor(2), b);
     writePosition(robor(1), a);
 end
