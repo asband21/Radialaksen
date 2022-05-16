@@ -60,7 +60,7 @@ function output = a_invers_kinematic(x,y,z)
     c2 = (180*c2)/pi-90;
     e2 = (180*e2)/pi;
     
-    output = [a, b, c ,d, e; a, b2, c2 ,d, e2; mod(a+180,360), 180-b, 180-c ,d, 180-e; mod(a+180,360), 180-b2, 180-c2 ,d, 180-e2];
+    output = [a, b, c ,d, e+10; a, b2, c2 ,d, e2+10; mod(a+180,360), 180-b, 180-c ,d, 180-e; mod(a+180,360), 180-b2, 180-c2 ,d, 180-e2];
     %if(a > pi)
     %    output = [a, b, c ,d, e; a2 pi-b]
     %else

@@ -45,8 +45,8 @@ function output = J_Forward_kinematic(a, b, c, d, e,plot_bool)
         xlim([-150 350])
         ylim([-150 350])
         zlim([0 500])
-        view(45,45)
-        %view(a*180/pi+90,0)
+        %view(0,90)
+        view(a*180/pi+90,0)
     end
     output=[x;y;z];
 end
