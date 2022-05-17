@@ -14,10 +14,10 @@ function main = follow_line_edit()
     %end
 
     %% poitns and functions 
-    point_1 = [-150,150,20];
-    point_2 = [-150,150,150];
-    point_3 = [-150,-150,150];
-    point_4 = [-150,-150,20];
+    point_1 = [-40,250,100];
+    point_2 = [-267.5,200,100];
+    point_3 = [-267.5,0,100];
+    point_4 = [-267.5,0,75];
     point_5 = point_3;
     point_6 = point_2;
     point_7 = point_1; 
