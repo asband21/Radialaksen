@@ -2,7 +2,7 @@
     
 function main = folo_line()
     %clc; clear; close all; 
-    ardino = true
+    ardino = false
     figure(1);
     if ardino
         robor = setop_adriuno();
@@ -20,18 +20,8 @@ function main = folo_line()
     pungt_5 = pungt_3;
     pungt_6 = pungt_2;
     pungt_7 = pungt_1;
-    fun1 = j_trajectory_2(pungt_1,pungt_2);
-    fun2 = j_trajectory_2(pungt_2,pungt_3);
-    fun3 = j_trajectory_2(pungt_3,pungt_4);
-    fun4 = j_trajectory_2(pungt_4,pungt_5);
-    fun5 = j_trajectory_2(pungt_5,pungt_6);
-    fun6 = j_trajectory_2(pungt_6,pungt_7);
-    data = run_step(0,0.03,1,fun1);
-    data = [data;run_step(0,0.02,1,fun2)];
-    data = [data;run_step(0,0.1,1,fun3)];
-    data = [data;run_step(0,0.1,1,fun4)];
-    data = [data;run_step(0,0.02,1,fun5)];
-    data = [data;run_step(0,0.01,1,fun6)];
+    p_list = {pungt_1,pungt_2,pungt_3,pungt_4,pungt_5,pungt_6,pungt_7};
+    data = point_to_point(p_list,3);
     for roins = 1 : 1
         siz = size(data);
         inver = zeros(siz(1)+1,5);
@@ -41,9 +31,9 @@ function main = folo_line()
         for i = 1 : 1 : siz(1)
             pause(0);
     
-            mid = a_invers_kinematic(data(i,1),data(i,2),data(i,3))
+            mid = a_invers_kinematic(data(i,1),data(i,2),data(i,3));
             inver(i+1,:) = mid(1,:);% vinkler(inver(i,:),mid);
-            xyz(i,:) = J_Forward_kinematic(inver(i+1,1),inver(i+1,2),inver(i+1,3),inver(i+1,4),inver(i+1,5),true)
+            xyz(i,:) = J_Forward_kinematic(inver(i+1,1),inver(i+1,2),inver(i+1,3),inver(i+1,4),inver(i+1,5),true);
             rob_angel = [];
             for led = 1 : 1: 5
                 rob_angel(led) = dregres_to_robot(inver(i+1,led));
@@ -79,13 +69,13 @@ function done = run_step(start,step, stop, fun,delay)
 
     var = [];
     caunter = 1;
-    var(uint8((stop-start)/step)+1,:) = [0,0,0]; 
+    %var(uint8((stop-start)/step)-1,:) = [0,0,0]; 
     for i = start : step : stop
         var(caunter,:) = fun(i);
         pause(delay);
         caunter = caunter+1;
     end
-    done = var
+    done = var;
 end
 
 function robor = setop_adriuno()
@@ -108,7 +98,7 @@ function robor = setop_adriuno()
 end
 
 function set_angel(robor,a,b,c,d,e)
-    per = [a ,b ,c ,d ,e]
+    per = [a ,b ,c ,d ,e];
     writePosition(robor(5), e);
     writePosition(robor(4), d);
     writePosition(robor(3), 1-c);
@@ -149,7 +139,6 @@ end
 function out = vinkler(now,angls_val)
     vink = [1000,1000,1000,1000];
     for i = 1 : 1 : 4
-        pol = angls_val(i,:)
         if(er_lovlig(angls_val(i,:)))
             angls_val(i,:) = trim_angls(angls_val(i,:));
             vink(i) = 0;
@@ -171,4 +160,21 @@ function out = vinkler(now,angls_val)
     else
         out = angls_val(index,:);
     end
+end
+
+function data = line_pahfe(data,start,stop,speed)
+    len = sqrt((start(1)-stop(1))^2+(start(2)-stop(2))^2+(start(3)-stop(3))^2);
+    step = speed/len;
+    fun1 = j_trajectory_2(start,stop);
+    var = run_step(0,step,1,fun1);
+    data = [data;var];
+end
+
+function out = point_to_point(points,speed)
+    data = [];
+    siz = size(points);
+    for i = 1 : siz(2)-1
+        data = line_pahfe(data,points{i},points{i+1},speed);
+    end
+    out = data;
 end
