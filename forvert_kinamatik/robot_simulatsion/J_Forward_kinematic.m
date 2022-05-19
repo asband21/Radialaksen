@@ -42,11 +42,11 @@ function output = J_Forward_kinematic(a, b, c, d, e,plot_bool)
     z = z2(size_P_transformation_matrix_list(2));
     if plot_bool
         plot3(x2,y2,z2)
-        xlim([-150 350]);
-        ylim([-150 350]);
+        xlim([-350 350]);
+        ylim([-350 350]);
         zlim([0 500])
         %view(0,90)
-        view(a*180/pi+90,0)
+        %view(a*180/pi+90,0)
     end
     output=[x;y;z];
 end
