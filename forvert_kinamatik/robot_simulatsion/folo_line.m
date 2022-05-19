@@ -13,15 +13,17 @@ function main = folo_line()
      %    set_angel(robor,dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(180))
      %end
 
-    pungt_1 = [-40,250,100];
+    pungt_1 = [200,250,100];
     pungt_2 = [-267.5,200,100];
     pungt_3 = [-267.5,0,100];
     pungt_4 = [-267.5,0,75];
     pungt_5 = pungt_3;
     pungt_6 = pungt_2;
     pungt_7 = pungt_1;
-    p_list = {pungt_1,pungt_2,pungt_3,pungt_4,pungt_5,pungt_6,pungt_7};
+    p_list = {pungt_1,pungt_2 }%,pungt_3,pungt_4,pungt_5,pungt_6,pungt_7};
     data = point_to_point(p_list,3);
+    cierkel = @(x) [cos(x)*100,200,sin(x)*100+120];
+    data = [data;run_step(0,0.04,2*pi,cierkel)];
     for roins = 1 : 1
         siz = size(data);
         inver = zeros(siz(1)+1,5);
