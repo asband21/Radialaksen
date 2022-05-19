@@ -2,7 +2,7 @@
     
 function main = prof_of_concept()
     %clc; clear; close all; 
-    ardino = false
+    ardino = true
     figure(1);
     if ismac
         print("fuck dig");
@@ -24,12 +24,11 @@ function main = prof_of_concept()
     %end
 
     %main prof of concept
-    %set_angel(robor,dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(0),dregres_to_robot(90));
+    set_angel(robor,dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(0),dregres_to_robot(90));
 
     first_butten = 1;
     while first_butten == 1
-	    %first_butten = readDigitalPin(a,'D2')
-        first_butten = 0
+	    first_butten = readDigitalPin(a,'D2')
     end
     pungt_1 = [-200,0,200];
     pungt_2 = [-230,60,150];
