@@ -4,14 +4,29 @@ function main = folo_line()
     %clc; clear; close all; 
     ardino = false
     figure(1);
-    if ardino
-        robor = setop_adriuno();
+    if ismac
+        print("fuck dig");
+    elseif isunix
+        print("linux");
+        a = arduino('/dev/ttyACM0', 'Uno', 'Libraries', 'Servo');
+    elseif ispc
+        a = arduino('COM3', 'Uno', 'Libraries', 'Servo');
+    else
+        disp('Platform not supported')
     end
-    
-     %while true
-     %    J_Forward_kinematic(90,90,90,0,180,true)
-     %    set_angel(robor,dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(180))
-     %end
+    if ardino
+        robor = setop_adriuno(a);
+    end 
+    it_butten = 1;
+    while it_butten == 1
+	it_butten = digitalWrite(a,'D2');
+    end
+    it_butten = 1;
+
+    %while true
+    %    J_Forward_kinematic(90,90,90,0,180,true)
+    %    set_angel(robor,dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(180))
+    %end
 
     pungt_1 = [200,250,100];
     pungt_2 = [-267.5,200,100];
@@ -80,17 +95,7 @@ function done = run_step(start,step, stop, fun,delay)
     done = var;
 end
 
-function robor = setop_adriuno()
-    if ismac
-        print("fuck dig");
-    elseif isunix
-        print("linux");
-        a = arduino('/dev/ttyACM0', 'Uno', 'Libraries', 'Servo');
-    elseif ispc
-        a = arduino('COM3', 'Uno', 'Libraries', 'Servo');
-    else
-        disp('Platform not supported')
-    end
+function robor = setop_adriuno(a)
     wrist = servo(a, 'D11'); %, 'MinPulseDuration', 1e-3, 'MaxPulseDuration', 2e-3);
     roll = servo(a, 'D10'); %, 'MinPulseDuration', 9e-4, 'MaxPulseDuration', 2e-3);
     elbow = servo(a, 'D9');%, 'MinPulseDuration', 1e-3, 'MaxPulseDuration', 2e-3);
