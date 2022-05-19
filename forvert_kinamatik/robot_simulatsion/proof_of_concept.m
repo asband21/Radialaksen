@@ -1,11 +1,11 @@
 %%folov fugnsen
     
-function main = prof_of_concept()
+function main = proof_of_concept()
     %clc; clear; close all; 
-    ardino = true
+    arduino = true
     figure(1);
     if ismac
-        print("fuck dig");
+        print("Mac is bad");
     elseif isunix
         print("linux");
         a = arduino('/dev/ttyACM0', 'Uno', 'Libraries', 'Servo');
@@ -14,67 +14,67 @@ function main = prof_of_concept()
     else
         disp('Platform not supported')
     end
-    if ardino
-        robor = setop_adriuno(a);
+    if arduino
+        robot = arduino(a);
     end
 
     %while true
     %    J_Forward_kinematic(90,90,0,0,90,true)
-    %    set_angel(robor,dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(180))
+    %    set_angle(robot,dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(180))
     %end
 
-    %main prof of concept
-    set_angel(robor,dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(0),dregres_to_robot(90));
+    %main proof of concept
+    set_angle(robot,dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(0),dregres_to_robot(90));
 
     first_butten = 1;
     while first_butten == 1
 	    first_butten = readDigitalPin(a,'D2')
     end
-    pungt_1 = [-200,0,200];
-    pungt_2 = [-230,60,150];
-    pungt_3 = [-250,140,100];
-    pungt_4 = [-180,200,60];
+    point_1 = [-200,0,200];
+    point_2 = [-230,60,150];
+    point_3 = [-250,140,100];
+    point_4 = [-180,200,60];
     set_speed = 10;
-    run_trajectory(pungt_1,pungt_2,pungt_3,pungt_4,robor,ardino,set_speed)
+    run_trajectory(point_1,point_2,point_3,point_4,robot,arduino,set_speed)
 
     pause(5)
-    pungt_1 = [-180,200,60];
-    pungt_2 = [-180,200,100];
-    pungt_3 = [-250,0,150];
-    pungt_4 = [-150,-150,250];
+    point_1 = [-180,200,60];
+    point_2 = [-180,200,100];
+    point_3 = [-250,0,150];
+    point_4 = [-150,-150,250];
     set_speed = 5;
-    run_trajectory(pungt_1,pungt_2,pungt_3,pungt_4,robor,ardino,set_speed)
+    run_trajectory(point_1,point_2,point_3,point_4,robot,arduino,set_speed)
     
     while true
         return_butten = 1;
         while return_butten == 1
 	        return_butten = readDigitalPin(a,'D2')
         end
-        pungt_1 = [-150,-150,250];
-        pungt_2 = [-250,0,150];
-        pungt_3 = [-180,200,100];
-        pungt_4 = [-180,200,60];
+        point_1 = [-150,-150,250];
+        point_2 = [-250,0,150];
+        point_3 = [-180,200,100];
+        point_4 = [-180,200,60];
         set_speed = 5;
-        run_trajectory(pungt_1,pungt_2,pungt_3,pungt_4,robor,ardino,set_speed)
+        run_trajectory(point_1,point_2,point_3,point_4,robot,arduino,set_speed)
 
         user_butten = 1;
         while user_butten == 1
 	        user_butten = readDigitalPin(a,'D2')
         end
-        pungt_1 = [-180,200,60];
-        pungt_2 = [-180,200,100];
-        pungt_3 = [-250,0,150];
-        pungt_4 = [-150,-150,250];
+        point_1 = [-180,200,60];
+        point_2 = [-180,200,100];
+        point_3 = [-250,0,150];
+        point_4 = [-150,-150,250];
         set_speed = 5;
-        run_trajectory(pungt_1,pungt_2,pungt_3,pungt_4,robor,ardino,set_speed)
+        run_trajectory(point_1,point_2,point_3,point_4,robot,arduino,set_speed)
     end
 
 
-    function run_trajectory(pungt_1,pungt_2,pungt_3,pungt_4,robor,ardino,speed)
-    %pungt_5 = pungt_3;
-    %pungt_6 = pungt_2;
-    %pungt_7 = pungt_1;
-    p_list = {pungt_1,pungt_2 ,pungt_3,pungt_4,};%pungt_5,pungt_6,pungt_7};
+    function run_trajectory(point_1,point_2,point_3,point_4,robot,arduino,speed)
+    %point_5 = point_3;
+    %point_6 = point_2;
+    %point_7 = point_1;
+    p_list = {point_1,point_2 ,point_3,point_4,};%point_5,point_6,point_7};
     data = point_to_point(p_list,speed*1.88);
     %cierkel = @(x) [cos(x)*100,200,sin(x)*100+120];
     %data = [data;run_step(0,0.04,2*pi,cierkel)];
@@ -88,14 +88,14 @@ function main = prof_of_concept()
             pause(0);
     
             mid = a_invers_kinematic(data(i,1),data(i,2),data(i,3));
-            inver(i+1,:) = mid(1,:);% vinkler(inver(i,:),mid);
+            inver(i+1,:) = mid(1,:);% angles(inver(i,:),mid);
             xyz(i,:) = J_Forward_kinematic(inver(i+1,1),inver(i+1,2),inver(i+1,3),inver(i+1,4),inver(i+1,5),true);
-            rob_angel = [];
+            rob_angle = [];
             for led = 1 : 1: 5
-                rob_angel(led) = dregres_to_robot(inver(i+1,led));
+                rob_angle(led) = dregres_to_robot(inver(i+1,led));
             end
-            if ardino
-                set_angel(robor,rob_angel(1),rob_angel(2),rob_angel(3),rob_angel(4),rob_angel(5));
+            if arduino
+                set_angle(robot,rob_angle(1),rob_angle(2),rob_angle(3),rob_angle(4),rob_angle(5));
             end
             pause(0.01);
             %a_invers_kinematic()
@@ -134,22 +134,22 @@ function done = run_step(start,step, stop, fun,delay)
     done = var;
 end
 
-function robor = setop_adriuno(a)
+function robot = arduino(a)
     wrist = servo(a, 'D11'); %, 'MinPulseDuration', 1e-3, 'MaxPulseDuration', 2e-3);
     roll = servo(a, 'D10'); %, 'MinPulseDuration', 9e-4, 'MaxPulseDuration', 2e-3);
     elbow = servo(a, 'D9');%, 'MinPulseDuration', 1e-3, 'MaxPulseDuration', 2e-3);
     shoulder = servo(a, 'D6');%, 'MinPulseDuration', 1e-3, 'MaxPulseDuration', 2e-3);
     base = servo(a, 'D5');%, 'MinPulseDuration', 1e-3, 'MaxPulseDuration', 2e-3);
-    robor = [base,shoulder,elbow,roll,wrist];
+    robot = [base,shoulder,elbow,roll,wrist];
 end
 
-function set_angel(robor,a,b,c,d,e)
+function set_angle(robot,a,b,c,d,e)
     per = [a ,b ,c ,d ,e];
-    writePosition(robor(5), e);
-    writePosition(robor(4), d);
-    writePosition(robor(3), 1-c);
-    writePosition(robor(2), b);
-    writePosition(robor(1), a);
+    writePosition(robot(5), e);
+    writePosition(robot(4), d);
+    writePosition(robot(3), 1-c);
+    writePosition(robot(2), b);
+    writePosition(robot(1), a);
 end
 
 function out = dregres_to_robot(x)
@@ -182,7 +182,7 @@ function erl = er_lovlig(list)
     end
 end
 
-function out = vinkler(now,angls_val)
+function out = angles(now,angls_val)
     vink = [1000,1000,1000,1000];
     for i = 1 : 1 : 4
         if(er_lovlig(angls_val(i,:)))
