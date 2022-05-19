@@ -31,17 +31,17 @@ function main = folo_line()
 	    first_butten = readDigitalPin(a,'D2')
     end
     pungt_1 = [-200,0,200];
-    pungt_2 = [-230,60,150];
-    pungt_3 = [-250,140,100];
-    pungt_4 = [-180,200,60];
+    pungt_2 = [-230,60,160];
+    pungt_3 = [-250,140,120];
+    pungt_4 = [-230,180,80];
     set_speed = 10;
     run_trajectory(pungt_1,pungt_2,pungt_3,pungt_4,robor,ardino,set_speed)
 
     pause(5)
-    pungt_1 = [-180,200,60];
-    pungt_2 = [-180,200,100];
+    pungt_1 = [-230,180,80];
+    pungt_2 = [-230,180,100];
     pungt_3 = [-250,0,150];
-    pungt_4 = [-150,-150,250];
+    pungt_4 = [-180,-200,250];
     set_speed = 5;
     run_trajectory(pungt_1,pungt_2,pungt_3,pungt_4,robor,ardino,set_speed)
     
@@ -50,10 +50,10 @@ function main = folo_line()
         while return_butten == 1
 	        return_butten = readDigitalPin(a,'D2')
         end
-        pungt_1 = [-150,-150,250];
+        pungt_1 = [-180,-200,250];
         pungt_2 = [-250,0,150];
-        pungt_3 = [-180,200,100];
-        pungt_4 = [-180,200,60];
+        pungt_3 = [-230,180,100];
+        pungt_4 = [-230,180,80];
         set_speed = 5;
         run_trajectory(pungt_1,pungt_2,pungt_3,pungt_4,robor,ardino,set_speed)
 
@@ -61,10 +61,10 @@ function main = folo_line()
         while user_butten == 1
 	        user_butten = readDigitalPin(a,'D2')
         end
-        pungt_1 = [-180,200,60];
-        pungt_2 = [-180,200,100];
+        pungt_1 = [-230,200,80];
+        pungt_2 = [-230,200,100];
         pungt_3 = [-250,0,150];
-        pungt_4 = [-150,-150,250];
+        pungt_4 = [-180,-200,200];
         set_speed = 5;
         run_trajectory(pungt_1,pungt_2,pungt_3,pungt_4,robor,ardino,set_speed)
     end
