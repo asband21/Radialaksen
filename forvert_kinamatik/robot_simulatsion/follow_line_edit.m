@@ -10,7 +10,7 @@ function main = follow_line_edit()
     %% Debuging
     %J_Forward_kinematic(0,90,90,0,0,true)
     %while true
-    %    set_angel(robot,dregres_to_robot(0),dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(90))
+    %    set_angel(robot,degrees_to_robot(0),degrees_to_robot(90),degrees_to_robot(90),degrees_to_robot(0),degrees_to_robot(90))
     %end
 
     %% poitns and functions 
@@ -58,7 +58,7 @@ function main = follow_line_edit()
 
              %incetes the convetet degreass into the robot_angle for each joint
             for led = 1 : 1: 5
-                rob_angle(led) = dregres_to_robot(inverse(i+1,led));
+                rob_angle(led) = degrees_to_robot(inverse(i+1,led));
             end
 
             if ardino
@@ -137,11 +137,11 @@ function set_angel(robot,a,b,c,d,e)
 end
 
 %% Funtion-set #2 
-function out = dregres_to_robot(x)
+function out = degrees_to_robot(x)
     if(x<0) 
         x = 360+x; % if the degree is below 0, it is then added the value of 360
     end
-    out = clamp(mod(x,360),0,180)/180; % conventing the angles to robot joint angels
+    out = clamp(mod(x,360),0,180)/180; % conventing the angles to robot joint angles
 end 
 
 % ensure that the robot joint angels are between 0 and 360 degrees
@@ -185,9 +185,9 @@ function out = vinkler(now,angls_val)
     end
     min = 100000000;
     index = 0; 
-    % comparing soultions with least deviation
+    % comparing solutions with least deviation
     for i = 1 : 1 : 4
-        if not(vink(i) == 1000) && vink(i)< min % when angle is not equal tp 1000 and is abov minimum
+        if not(vink(i) == 1000) && vink(i)< min % when angle is not equal tp 1000 and is above minimum
             index = i;
             min = vink(i);
         end

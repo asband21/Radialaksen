@@ -110,7 +110,6 @@ end
 end
 
 function done = j_trajectory_2(t_1,t_2)
-%UNTITLED3 Summary of this function goes here%   Detailed explanation goes here
     r_1 = t_2(1)-t_1(1);
     r_2=t_2(2)-t_1(2);
     r_3=t_2(3)-t_1(3);  
@@ -154,10 +153,13 @@ end
 
 function out = degrees_to_robot(x)
     if(x<0)
-        x = 360+x;
+        x = 360+x; % if the degree is below 0, it is then added the value of 360
     end
-    out = clamp(mod(x,360),0,180)/180;
+    out = clamp(mod(x,360),0,180)/180; % conventing the angles to robot joint angles
 end
+
+% ensure that the robot joint angels are between 0 and 360 degrees
+
 function out = trim_angels(list)
     for i = 1 : 1 : 5
         if(list(i)<0)
@@ -181,9 +183,10 @@ function erl = is_legal(list)
     erl = bol;
     end
 end
-
+% Finding the solution with the least amout of angle deviation
 function out = angles(now,angels_val)
-    vink = [1000,1000,1000,1000];
+%Find angle deaviation
+    vink = [1000,1000,1000,1000]; % High value, like infinity
     for i = 1 : 1 : 4
         if(is_legal(angels_val(i,:)))
             angels_val(i,:) = trim_angels(angels_val(i,:));
