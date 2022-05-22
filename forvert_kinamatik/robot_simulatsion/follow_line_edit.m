@@ -2,46 +2,45 @@
     
 function main = follow_line_edit()
     %clc; clear; close all;  
-    ardino = false % if arduino is true, then the arudino is activated
+    ardino = false; % if arduino is true, then the arudino is activated
     figure(1);
     if ardino
-        robot = setup_ardurino();
-    end 
+        if ismac
+            print("fuck dig");
+        elseif isunix
+            print("linux");
+            a = arduino('/dev/ttyACM0', 'Uno', 'Libraries', 'Servo');
+        elseif ispc
+            a = arduino('COM3', 'Uno', 'Libraries', 'Servo');
+        else
+            disp('Platform not supported')
+        end
+        robot = setup_ardurino(a); 
+        it_butten = 1;
+        while it_butten == 1
+	        it_butten = digitalWrite(a,'D2');
+        end
+        it_butten = 1;
+    end
+
     %% Debuging
     %J_Forward_kinematic(0,90,90,0,0,true)
     %while true
     %    set_angel(robot,dregres_to_robot(0),dregres_to_robot(90),dregres_to_robot(90),dregres_to_robot(0),dregres_to_robot(90))
     %end
 
-    %% poitns and functions 
-    point_1 = [-40,250,100];
-    point_2 = [-267.5,200,100];
-    point_3 = [-267.5,0,100];
-    point_4 = [-267.5,0,75];
-    point_5 = point_3;
-    point_6 = point_2;
-    point_7 = point_1; 
-
-    fun1 = j_trajectory_2(point_1,point_2);
-    fun2 = j_trajectory_2(point_2,point_3);
-    fun3 = j_trajectory_2(point_3,point_4);
-    fun4 = j_trajectory_2(point_4,point_5);
-    fun5 = j_trajectory_2(point_5,point_6);
-    fun6 = j_trajectory_2(point_6,point_7); 
-
-  % data is incetet into matrix, the matrix grows for each functions that is incetet  
-
-  %% matrix update with functions and poitns
-    data = run_step(0,0.1,1,fun1);
-    data = [data;run_step(0,0.02,1,fun2)];
-    data = [data;run_step(0,0.1,1,fun3)];
-    data = [data;run_step(0,0.1,1,fun4)];
-    data = [data;run_step(0,0.02,1,fun5)];
-    data = [data;run_step(0,0.1,1,fun6)];  
-
-%% Program run 
-% The program runs 10 times
-    for runs = 1 : 10
+    pungt_1 = [200,250,100];
+    pungt_2 = [-267.5,200,100];
+    pungt_3 = [-267.5,0,100];
+    pungt_4 = [-267.5,0,75];
+    pungt_5 = pungt_3;
+    pungt_6 = pungt_2;
+    pungt_7 = pungt_1;
+    p_list = {pungt_1,pungt_2,pungt_3,pungt_4,pungt_5,pungt_6,pungt_7};
+    data = point_to_point(p_list,30     );
+    %cierkel = @(x) [cos(x)*100,200,sin(x)*100+120];
+    %data = [data;run_step(0,0.04,2*pi,cierkel)];
+    for roins = 1 : 1
         siz = size(data);
         inverse = zeros(siz(1)+1,5);
         start_value = a_invers_kinematic(data(1,1),data(1,2),data(1,3));
@@ -50,10 +49,10 @@ function main = follow_line_edit()
 
         for i = 1 : 1 : siz(1)
             pause(0); %pause
-            mid = a_invers_kinematic(data(i,1),data(i,2),data(i,3)) %inversekinematic on the 'data'  
+            mid = a_invers_kinematic(data(i,1),data(i,2),data(i,3)); %inversekinematic on the 'data'  
             inverse(i+1,:) = vinkler(inverse(i,:),mid); % angle
             xyz(i,:) = J_Forward_kinematic(inverse(i+1,1),inverse(i+1,2), ...
-                inverse(i+1,3),inverse(i+1,4),inverse(i+1,5),true) % checking the forwardkiematic with the inverse angels 
+                inverse(i+1,3),inverse(i+1,4),inverse(i+1,5),true); % checking the forwardkiematic with the inverse angels 
             rob_angle = []; %inisilaysig the rob_angle
 
              %incetes the convetet degreass into the robot_angle for each joint
@@ -89,8 +88,7 @@ end
 
 
 function done = run_step(start,step, stop, fun,delay) 
-
-%If the delay is not specfied in the function call, delay is equal to 0 
+    %If the delay is not specfied in the function call, delay is equal to 0 
     if nargin < 5
         delay = 0;
     end
@@ -98,7 +96,6 @@ function done = run_step(start,step, stop, fun,delay)
     % IZITILAZING array to optimize the performance
     var = [];
     caunter = 1;
-    var(uint8((stop-start)/step)+1,:) = [0,0,0];  % finding the max vaule of and setting it to [0,0,0]
     for i = start : step : stop
         var(caunter,:) = fun(i); % running the functions of the paths
         pause(delay);
@@ -108,17 +105,7 @@ function done = run_step(start,step, stop, fun,delay)
 end
 
 %% arduino setup 
-function robot = setup_ardurino()
-    if ismac
-        print("fuck dig");
-    elseif isunix
-        print("linux");
-        a = arduino('/dev/ttyACM0', 'Uno', 'Libraries', 'Servo');
-    elseif ispc
-        a = arduino('COM14', 'Uno', 'Libraries', 'Servo');
-    else
-        disp('Platform not supported')
-    end
+function robot = setup_ardurino(a)
     wrist = servo(a, 'D11'); %, 'MinPulseDuration', 1e-3, 'MaxPulseDuration', 2e-3);
     roll = servo(a, 'D10'); %, 'MinPulseDuration', 9e-4, 'MaxPulseDuration', 2e-3);
     elbow = servo(a, 'D9');%, 'MinPulseDuration', 1e-3, 'MaxPulseDuration', 2e-3);
@@ -162,7 +149,7 @@ function erl = er_lovlig(list)
         if(list(i)<0)
             list(i) = 360+list(i);
         end
-        list(i) = mod(list(i),360)
+        list(i) = mod(list(i),360);
         if(list(i) < 0 && list(i) > 180)
             bol = false;
         end
@@ -172,7 +159,7 @@ end
 
 % Finding the solution with the least amout of angel deviation
 function out = vinkler(now,angls_val) 
-%Find angel deaviation
+    %Find angel deaviation
     vink = [1000,1000,1000,1000]; % High vaule, like infinity
     for i = 1 : 1 : 4
         if(er_lovlig(angls_val(i,:)))
@@ -196,6 +183,23 @@ function out = vinkler(now,angls_val)
     if index == 0
         out = now;
     else
-        out = angls_val(index,:); %leagal soultion found with the least angel deviation
+        out = angls_val(index,:);
     end
+end
+
+function data = line_pahfe(data,start,stop,speed)
+    len = sqrt((start(1)-stop(1))^2+(start(2)-stop(2))^2+(start(3)-stop(3))^2);
+    step = speed/len;
+    fun1 = j_trajectory_2(start,stop);
+    var = run_step(0,step,1,fun1);
+    data = [data;var];
+end
+
+function out = point_to_point(points,speed)
+    data = [];
+    siz = size(points);
+    for i = 1 : siz(2)-1
+        data = line_pahfe(data,points{i},points{i+1},speed);
+    end
+    out = data;
 end
