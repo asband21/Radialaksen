@@ -4,7 +4,6 @@ This is a school project. For the. Robotics engineering course. At Aalobrg Unive
 ## Author 
 ### Tobias
 ### Asbjørn 
-### Jørgensen
 ### Nicher
 ### Mads 
 ### jakob
